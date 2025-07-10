@@ -1,0 +1,29 @@
+{% extends "todo/base.html" %}
+{% block title %}Home | Todo App{% endblock %}
+
+{% block content %}
+  <!-- ============ New‑todo form ============ -->
+  <h2 style="color:#e74c3c; margin-bottom:1rem;">➕ Add a New Todo</h2>
+  <form method="post" style="margin-bottom:2rem;">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" style="margin: 1rem;">Add Todo</button>
+  </form>
+
+  <hr style="margin:1rem 0; border:none; border-top:1px solid #e2e8f0;">
+
+  <!-- ============ Todo list ============ -->
+  <h2 style="color:#8e44ad;">📝 Current Todos</h2>
+  {% if todos %}
+    <ul>
+      {% for t in todos %}
+        <li>
+          {{ t.title }}
+          <a href="{% url 'delete_todo' t.pk %}">❌ Delete</a>
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p style="color:gray;">No todos yet. Start by adding one above!</p>
+  {% endif %}
+{% endblock %}

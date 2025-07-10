@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>{% block title %}Todo App{% endblock %}</title>
+
+
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: Arial, sans-serif;
+      background: #fff4e3;   /* light biscuit tone */
+      color: #333;
+      padding: 2rem 1rem;
+      text-align: center;
+    }
+
+    /* ----- Header & slider banner ----- */
+    h1 {
+      font-size: 2.25rem;
+      color: chocolate;
+      margin-bottom: 0.5rem;
+    }
+    .slider-banner {
+      overflow:hidden;
+      background: #ffdd57;
+      padding: 0.5rem;
+      margin-bottom: 2rem;
+      white-space: nowrap;
+      border-radius: 0.5rem;
+    }
+    .slider-banner p {
+      display: inline-block;
+      padding-left: 100%;
+      animation: slide-left 10s linear infinite;
+      font-weight: 600;
+    }
+    @keyframes slide-left {
+      0%   { transform: translateX(0); }
+      100% { transform: translateX(-100%); }
+    }
+
+    /* ----- Main card container ----- */
+    .card {
+      max-width: 600px;
+      margin: 0 auto;
+      background: #ffffff;
+      padding: 2rem;
+      border-radius: 0.75rem;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      text-align: left;
+    }
+
+    /* ----- Links & buttons ----- */
+    a {
+      color: #d11a2a;
+      text-decoration: none;
+      font-weight: 600;
+    }
+    a:hover { text-decoration: underline; }
+
+    button {
+      background: bisque;
+      padding: 0.5rem 1.25rem;
+      border: none;
+      border-radius: 0.5rem;
+      cursor: pointer;
+      font-weight: 600;
+    }
+    button:hover { background: #ffcc99; }
+
+    /* ----- Lists ----- */
+    ul { list-style: none; margin-top: 1rem; padding: 0; }
+    li {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #f1f5f9;
+      margin-bottom: 0.5rem;
+      padding: 0.75rem 1rem;
+      border-radius: 0.5rem;
+    }
+  </style>
+</head>
+
+<body>
+ {% block slider %}
+  <!-- Moving banner -->
+  <div class="slider-banner">
+    <p>Welcome to your personal To‑Do app — stay organised and get things done! 🚀</p>
+  </div>
+{% endblock %}
+
+  <!-- Page heading -->
+  <h1>Todo App</h1>
+
+  <!-- Main content wrapper -->
+  <div class="card">
+
+    {# -------- Login / Logout snippet -------- #}
+    {% if user.is_authenticated %}
+      <!-- Secure POST logout button (avoids 405 error) -->
+      <form method="post"
+            action="{% url 'logout' %}"
+            style="text-align:right; margin-bottom:1rem;">
+          {% csrf_token %}
+          <button type="submit"
+                  style="background:none; border:none;
+                         color:#d11a2a; font-weight:600; cursor:pointer;">
+              Logout
+          </button>
+      </form>
+    {% else %}
+      <p style="text-align:right; margin-bottom:1rem;">
+        <a href="{% url 'login' %}">Login</a>
+      </p>
+    {% endif %}
+
+    {# -------- Page‑specific content -------- #}
+    {% block content %}{% endblock %}
+
+  </div>
+</body>
+</html>
